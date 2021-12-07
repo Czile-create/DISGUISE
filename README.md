@@ -26,6 +26,7 @@ optional arguments:
                         使用指定的图片进行伪装
   --version, -v         show program's version number and exit
 ```
+![test/help.png](test/help.png)
 
 一些例子可以帮助你来理解：
 

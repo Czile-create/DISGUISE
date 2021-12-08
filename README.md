@@ -132,6 +132,13 @@ python convert.py -d -i test/output.tif -o decode.jpg -p rsa
 
 这样就能得到上述效果了。
 
+### 练习
+尝试对 `readme.png` 解密：
+
+```
+python convert.py -d -i readme.png -o readme.md
+```
+
 ## LICENCE
 GPL 3.0. 具体请查看 `LICENCE` 文件。
 

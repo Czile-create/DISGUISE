@@ -65,7 +65,7 @@ def encode(INPUT, OUTPUT, rate, lock, password, guise, bit16):
         else:                                                                       # 不伪装图片
             Image.fromarray(content).save(OUTPUT)
 
-def decode(INPUT, OUTPUT, password, guise):
+def decode(INPUT, OUTPUT, password):
     content = imread(INPUT)
     if content.dtype == 'uint16':                                               # 提取有用信息
         content &= 255
@@ -107,4 +107,4 @@ args = parser.parse_args()
 if args.encode:
     encode(args.INPUT[0], args.OUTPUT[0], int(args.rate[0]), args.lock, args.password[0], args.guise[0], args.bit16)
 else:
-    decode(args.INPUT[0], args.OUTPUT[0], args.password[0], args.guise[0])
+    decode(args.INPUT[0], args.OUTPUT[0], args.password[0])

@@ -1,21 +1,41 @@
 # CONVERT.PY
 
-你是否有这样的烦恼？有一些文件发给其他人的时候不方便用其本来的面貌发送？一些文件需要套上一层漂亮的皮储存在硬盘里？一些文件加密之后杂乱无章，希望以漂亮的图片的形式分享出去？
+你是否有这样的烦恼？
+- 有一些文件发给其他人的时候不方便用其本来的面貌发送？
+- 一些文件需要套上一层漂亮的皮储存在硬盘里？
+- 一些文件加密之后杂乱无章，希望以漂亮的图片的形式分享出去？
 
 本程序可对文件进行RSA加密/解密操作，并压缩文件大小，将其伪装成图片。
+
+## 特点
+
+- 对文件进行RSA加密
+- 自动生成RSA密钥
+- 对文件进行压缩
+- 对文件进行伪装
+
+## 目前支持的输出格式
+
+|格式|8位图片|16位图片|
+|-|-|-|
+|.tif|√|√|
+|.bmp|√||
+|.png|√||
 
 ## 用法
 ```python
 usage: convert.py [-h] --INPUT INPUT --OUTPUT OUTPUT [--rate RATE] [--encode]
                   [--decode] [--lock] [--password PASSWORD] [--guise GUISE]
-                  [--version]
+                  [--version] [--bit16]
+
+本程序可对文件进行RSA加密/解密操作，并压缩文件大小，将其伪装成图片
 
 optional arguments:
   -h, --help            show this help message and exit
   --INPUT INPUT, -i INPUT
                         要转化的文件名
   --OUTPUT OUTPUT, -o OUTPUT
-                        转化后的文件名，如果是文件转化为图片，你应该选择使用.tif格式
+                        转化后的文件名，如果是文件转化为图片，你应该选择使用.tif或.png格式
   --rate RATE, -r RATE  压缩效果，取值0-9
   --encode, -e          使用程序将文件写成图片格式
   --decode, -d          将图片格式的程序还原成文件
@@ -25,6 +45,7 @@ optional arguments:
   --guise GUISE, -g GUISE
                         使用指定的图片进行伪装
   --version, -v         show program's version number and exit
+  --bit16, -b           使用16位三通道图像伪装信息，使用该方法的时候应该选择.tif格式输出
 ```
 ![test/help.png](test/help.png)
 
@@ -59,16 +80,25 @@ python convert.py -e -i 小说.txt -o 小说.tif -r 6
 是的！即使你把奇怪的东西加密成一张图片，如果这个图片看上去是杂乱无章的，那么你分享出去不被怀疑才怪！！因此，我们提供了伪装的选项。你可以选定一张图片，我们会使得输出后的效果贴合这张图片的颜色，倒不如说效果极佳！要使用该功能，只需要加入 `-g` 参数，指定加密的图片。图片应当尽可能接近于方形。
 
 ```
-python convert.py -e -i 小说.txt -o 小说.tif -g 1.jpg
+python convert.py -e -i 小说.txt -o 小说.png -g 1.jpg
 ```
 
 加密后的图片将相比直接加密要大，但是这是必要的不是吗？我们来看看效果：
 
 |origin|guise|output|decode|
 |-|-|-|-|
-|![test/origin.jpg](test/origin.jpg)|![test/guise.png](test/guise.png)|![test/output.tif](test/output.tif)|![test/decode.jpg](test/decode.jpg)|
+|![test/origin.jpg](test/origin.jpg)|![test/guise.png](test/guise.png)|![test/output.png](test/output.png)|![test/decode.jpg](test/decode.jpg)|
 
-这样你就可以大胆地把 `output.tif` 发给朋友了！绝对不会有人发现这张公主照片下面居然藏着这么一个治愈的故事的！
+这样你就可以大胆地把 `output.png` 发给朋友了！绝对不会有人发现这张公主照片下面居然藏着这么一个治愈的故事的！
+
+### 增加图片伪装的质量
+上节中的例子容易看出，伪装后图片 `output.png` 的质量相比于 `guise.png` 的质量要低，这是正常的，要想使用高质量的伪装方法，你可以使用16位三通道的 `tiff` 格式为伪装
+
+```
+python convert.py -e -i 小说.txt -o 小说.tif -g 1.jpg -b
+```
+
+其中 `-b` 即 `--bit16`。此方法只支持 `tiff` 格式。
 
 ### 使用RSA算法进行加密
 
@@ -91,7 +121,7 @@ python convert.py -d -i 小说.tif -o 小说.txt -p rsa
 要想符合本文档中展示的效果，我们使用 `test/` 中的文件进行展示：
 
 ```
-python convert.py -e -i test/origin.jpg -o test/output.tif -g test/guise.png -l
+python convert.py -e -i test/origin.jpg -o test/output.png -g test/guise.png -l
 ```
 
 这里叠了好多好多的buff，因此我可以保证 `output.tif` 安全得很。要想解密上述文件，只需要：

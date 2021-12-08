@@ -1,4 +1,4 @@
-import zlib, math, argparse, rsa
+import zlib, math, argparse, rsa, secrets
 from PIL import Image
 import numpy as np
 from tqdm import tqdm
@@ -42,12 +42,11 @@ def encode(INPUT, OUTPUT, rate, lock, password, guise, bit16):
         sizeW = int(math.sqrt(len(content)/n) + 1)                          # 计算图片的宽高
         sizeH = int(len(content)/sizeW/n + 1)
         extendLength = int(sizeH * sizeW * n - len(content))                # 计算应该补充的像素点数量
-        content.extend([0 for i in range(extendLength - 3)])                # 补充像素点
+        content.extend(secrets.token_bytes(extendLength - 3))               # 补充像素点
         
         content.append(myHash(content))                                     # 验证码，验证文件是否损坏
         content.append(extendLength//256%256)                               # 最后一个像素记录补充的像素点数量
         content.append(extendLength%256)
-
 
         if n == 3:
             content = np.array(bytearray(content)).reshape((sizeH, sizeW, 3))       # 重设内容矩阵的大小

@@ -17,6 +17,15 @@ def createRSAKey():
     with open("rsa.pub", "wb") as f:
         f.write(pub.save_pkcs1())
 
+def fixPhoto(im):                                                 # 修复因改变冗余信息而降低质量的图像
+    im1 = im & 240
+    rand = np.random.random(im.shape) * 16
+    im2 = im & 15
+    im2[im2 > rand] = 16
+    im2[im2 != 16] = 0
+    im2[im1 == 240] = 0
+    im2 += im1
+    return im2
 
 def encode(INPUT, OUTPUT, rate, lock, password, guise, bit16):
     if lock and password == 'none':
@@ -60,7 +69,7 @@ def encode(INPUT, OUTPUT, rate, lock, password, guise, bit16):
             imsave(OUTPUT, content, plugin='tifffile')                              
         elif guise != 'none':                                                       # 使用8位深度伪装图片
             im = np.array(Image.open(guise).convert('RGBA').resize((sizeW, sizeH)))
-            content = (im & 240) + content
+            content = fixPhoto(im) + content
             Image.fromarray(content).save(OUTPUT)
         else:                                                                       # 不伪装图片
             Image.fromarray(content).save(OUTPUT)

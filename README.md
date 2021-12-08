@@ -9,10 +9,10 @@
 
 ## 特点
 
-- 对文件进行RSA加密
-- 自动生成RSA密钥
-- 对文件进行压缩
-- 对文件进行伪装
+- [x] 对文件进行RSA加密
+- [x] 自动生成RSA密钥
+- [x] 对文件进行压缩
+- [x] 对文件进行伪装
 
 ## 目前支持的输出格式
 
@@ -22,6 +22,9 @@
 |.bmp|√||
 |.png|√||
 
+## 安全性分析
+我们检查加密后的数据是否符合均匀分布，检查的函数是 `security/analyze.py`，效果非常喜人，一个例子的效果如下：
+![security/Analyze.png](security/Analyze.png)
 ## 用法
 ```python
 usage: convert.py [-h] --INPUT INPUT --OUTPUT OUTPUT [--rate RATE] [--encode]

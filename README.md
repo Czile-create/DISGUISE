@@ -7,6 +7,8 @@
 
 本程序可对文件进行RSA加密/解密操作，并压缩文件大小，将其伪装成图片。
 
+![test/help.png](test/help.png)
+
 ## 特点
 
 - [x] 对文件进行RSA加密
@@ -50,7 +52,7 @@ optional arguments:
   --version, -v         show program's version number and exit
   --bit16, -b           使用16位三通道图像伪装信息，使用该方法的时候应该选择.tif格式输出
 ```
-![test/help.png](test/help.png)
+
 
 一些例子可以帮助你来理解：
 
